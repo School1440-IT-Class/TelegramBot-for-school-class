@@ -1,15 +1,42 @@
 import telebot
 from telebot import types
+from pyowm import OWM
+from pyowm.utils.config import get_default_config
 
 #token
 bot = telebot.TeleBot('5447921416:AAGa0EKgsllkwcbCyzPEpyJuhId5v6RdM6c')
+
+#блок погоды
+config_dict = get_default_config()
+config_dict['language'] = 'ru'
+place = 'Москва'
+owm = OWM('1d851ca0825db1bd1f051db4773ad0c5', config_dict)
+mgr = owm.weather_manager()
+observation = mgr.weather_at_place(place)
+w = observation.weather
+
+t = w.temperature("celsius")
+t1 = t['temp']
+t2 = t['feels_like']
+t3 = t['temp_max']
+t4 = t['temp_min']
+
+wi = w.wind()['speed']
+humi = w.humidity
+cl = w.clouds
+st = w.status
+dt = w.detailed_status
+ti = w.reference_time('iso')
+pr = w.pressure['press']
+vd = w.visibility_distance
 
 @bot.message_handler(commands=["start"])
 def start(message):
     start = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
     menu = types.KeyboardButton(text="📚 Меню")
     info = types.KeyboardButton(text="ℹ️ Информация")
-    start.add(menu, info)
+    weather = types.KeyboardButton(text="☔️ Погода в школе")
+    start.add(menu, info, weather)
     bot.send_message(message.chat.id, "Добро пожаловать!", reply_markup=start)
 
 
@@ -31,6 +58,22 @@ def menu_gl(message):
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Сайт школы", url="https://sch1440.mskobr.ru"))
         bot.send_message(message.chat.id, "Ссылка:", reply_markup=markup)
+
+    elif message.text == "☔️ Погода в школе":
+        bot.send_message(message.chat.id, "Сегодня в школе погода:"+"\nТемпература "+str(t1)+"°C"+"\n"+
+                         "Максимальная температура "+str(t3)+"°C"+"\n"+
+                         "Минимальная температура "+str(t4)+"°C"+"\n"+
+                         "Ощущается как "+str(t2)+"°C"+"\n"+
+                         "Ветер дует со скоростью "+str(wi)+"м/с"+"\n"+
+                         "Давление сегодня "+str(pr)+"мм.рт.ст"+"\n"+
+                         "Влажность "+str(humi)+"%"+"\n"+
+                         "Видно cегодня на "+str(vd) + " метров" + "\n" +
+                         "На улице - "+str(dt) + "\n\n")
+        if dt == "пасмурно" or dt == "дождь":
+            bot.send_message(message.chat.id, "Захвати с собой зонтик!")
+        if t4<5:
+            bot.send_message(message.chat.id, "Одеваемся тепло!")
+
 
     elif message.text == "📹 Видео":
         markup = types.InlineKeyboardMarkup()
@@ -109,14 +152,16 @@ def menu_gl(message):
         start = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
         menu = types.KeyboardButton(text="📚 Меню")
         info = types.KeyboardButton(text="ℹ️ Информация")
-        start.add(menu, info)
+        weather = types.KeyboardButton(text="☔️ Погода в школе")
+        start.add(menu, info, weather)
         bot.send_message(message.chat.id, text="Вы вернулись в главное меню", reply_markup=start)
 
     elif message.text == "ℹ️ Информация":
         start = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
         menu = types.KeyboardButton(text="📚 Меню")
         info = types.KeyboardButton(text="ℹ️ Информация")
-        start.add(menu, info)
+        weather = types.KeyboardButton(text="☔️ Погода в школе")
+        start.add(menu, info, weather)
         bot.send_message(message.chat.id, "Начальник бота: Кирилл Александрович \nЕсли есть пожелания и предложения, напиши сюда: larink@mail.ru", reply_markup=start)
 
     else:
