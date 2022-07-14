@@ -1,16 +1,17 @@
 import telebot
+import configure
 from telebot import types
 from pyowm import OWM
 from pyowm.utils.config import get_default_config
 
 #token
-bot = telebot.TeleBot('5447921416:AAGa0EKgsllkwcbCyzPEpyJuhId5v6RdM6c')
+bot = telebot.TeleBot(configure.config['token'])
 
 #блок погоды
 config_dict = get_default_config()
 config_dict['language'] = 'ru'
 place = 'Москва'
-owm = OWM('1d851ca0825db1bd1f051db4773ad0c5', config_dict)
+owm = OWM(configure.config['owm'], config_dict)
 mgr = owm.weather_manager()
 observation = mgr.weather_at_place(place)
 w = observation.weather
@@ -46,7 +47,7 @@ def menu_gl(message):
         menu = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
         website = types.KeyboardButton(text="🌐 Сайт школы")
         raspisanie = types.KeyboardButton(text="📅 Расписание")
-        foto = types.KeyboardButton(text="Фотографии")
+        foto = types.KeyboardButton(text="📸 Фотографии")
         chat = types.KeyboardButton(text="Болталка")
         sciense = types.KeyboardButton(text="👨‍🎓 Предметы")
         video = types.KeyboardButton(text="📹 Видео")
@@ -64,12 +65,12 @@ def menu_gl(message):
                          "Максимальная температура "+str(t3)+"°C"+"\n"+
                          "Минимальная температура "+str(t4)+"°C"+"\n"+
                          "Ощущается как "+str(t2)+"°C"+"\n"+
-                         "Ветер дует со скоростью "+str(wi)+"м/с"+"\n"+
-                         "Давление сегодня "+str(pr)+"мм.рт.ст"+"\n"+
+                         "Ветер дует со скоростью "+str(wi)+" м/с"+"\n"+
+                         "Давление сегодня "+str(pr)+" мм.рт.ст"+"\n"+
                          "Влажность "+str(humi)+"%"+"\n"+
                          "Видно cегодня на "+str(vd) + " метров" + "\n" +
                          "На улице - "+str(dt) + "\n\n")
-        if dt == "пасмурно" or dt == "дождь":
+        if dt == "пасмурно" or dt == "дождь" or "небольшой дождь":
             bot.send_message(message.chat.id, "Захвати с собой зонтик!")
         if t4<5:
             bot.send_message(message.chat.id, "Одеваемся тепло!")
@@ -88,6 +89,11 @@ def menu_gl(message):
         photo = open('rasp.png','rb')
         bot.send_photo(message.chat.id, photo)
         bot.send_message(message.chat.id, "Расписание сейчас пустое. Лето же")
+
+    elif message.text == "📸 Фотографии":
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("Архивные фотографии", url="https://disk.yandex.ru/a/JROCoYo_scWZiQ"))
+        bot.send_message(message.chat.id, "Ссылки:", reply_markup=markup)
 
     elif message.text == "👨‍🎓 Предметы":
         predmet = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
@@ -162,7 +168,7 @@ def menu_gl(message):
         info = types.KeyboardButton(text="ℹ️ Информация")
         weather = types.KeyboardButton(text="☔️ Погода в школе")
         start.add(menu, info, weather)
-        bot.send_message(message.chat.id, "Начальник бота: Кирилл Александрович \nЕсли есть пожелания и предложения, напиши сюда: larink@mail.ru", reply_markup=start)
+        bot.send_message(message.chat.id, "Заведующий ботом: Кирилл Александрович \nЕсли есть пожелания и предложения, \nнапиши сюда: larink@mail.ru", reply_markup=start)
 
     else:
         bot.send_message(message.chat.id, text="Извини, на такую комманду я ещё не запрограммирован...")
