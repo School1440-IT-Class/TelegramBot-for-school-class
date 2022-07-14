@@ -1,17 +1,18 @@
 import telebot
-import configure
-from telebot import types
 from pyowm import OWM
 from pyowm.utils.config import get_default_config
+from telebot import types
 
-#token
-bot = telebot.TeleBot(configure.config['token'])
+import config
 
-#блок погоды
+# token
+bot = telebot.TeleBot(config.telegram_token)
+
+# блок погоды
 config_dict = get_default_config()
 config_dict['language'] = 'ru'
 place = 'Москва'
-owm = OWM(configure.config['owm'], config_dict)
+owm = OWM(config.owm_token, config_dict)
 mgr = owm.weather_manager()
 observation = mgr.weather_at_place(place)
 w = observation.weather
@@ -30,6 +31,7 @@ dt = w.detailed_status
 ti = w.reference_time('iso')
 pr = w.pressure['press']
 vd = w.visibility_distance
+
 
 @bot.message_handler(commands=["start"])
 def start(message):
@@ -61,18 +63,18 @@ def menu_gl(message):
         bot.send_message(message.chat.id, "Ссылка:", reply_markup=markup)
 
     elif message.text == "☔️ Погода в школе":
-        bot.send_message(message.chat.id, "Сегодня в школе погода:"+"\nТемпература "+str(t1)+"°C"+"\n"+
-                         "Максимальная температура "+str(t3)+"°C"+"\n"+
-                         "Минимальная температура "+str(t4)+"°C"+"\n"+
-                         "Ощущается как "+str(t2)+"°C"+"\n"+
-                         "Ветер дует со скоростью "+str(wi)+" м/с"+"\n"+
-                         "Давление сегодня "+str(pr)+" мм.рт.ст"+"\n"+
-                         "Влажность "+str(humi)+"%"+"\n"+
-                         "Видно cегодня на "+str(vd) + " метров" + "\n" +
-                         "На улице - "+str(dt) + "\n\n")
+        bot.send_message(message.chat.id, "Сегодня в школе погода:" + "\nТемпература " + str(t1) + "°C" + "\n" +
+                         "Максимальная температура " + str(t3) + "°C" + "\n" +
+                         "Минимальная температура " + str(t4) + "°C" + "\n" +
+                         "Ощущается как " + str(t2) + "°C" + "\n" +
+                         "Ветер дует со скоростью " + str(wi) + " м/с" + "\n" +
+                         "Давление сегодня " + str(pr) + " мм.рт.ст" + "\n" +
+                         "Влажность " + str(humi) + "%" + "\n" +
+                         "Видно cегодня на " + str(vd) + " метров" + "\n" +
+                         "На улице - " + str(dt) + "\n\n")
         if dt == "пасмурно" or dt == "дождь" or "небольшой дождь":
             bot.send_message(message.chat.id, "Захвати с собой зонтик!")
-        if t4<5:
+        if t4 < 5:
             bot.send_message(message.chat.id, "Одеваемся тепло!")
 
 
@@ -80,13 +82,14 @@ def menu_gl(message):
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Школа 24 июня 2022", url="https://youtu.be/TFdqabNRnHI"))
         markup.add(types.InlineKeyboardButton("Выпускной 2022", url="https://youtu.be/1nHmkMhGDa4"))
-        markup.add(types.InlineKeyboardButton("Поздравление девчонок на 23 февраля", url="https://youtu.be/nM0rY4sj1aA"))
+        markup.add(
+            types.InlineKeyboardButton("Поздравление девчонок на 23 февраля", url="https://youtu.be/nM0rY4sj1aA"))
         markup.add(types.InlineKeyboardButton("Новогодние пожелания", url="https://youtu.be/rbI3I8l9yTE"))
         markup.add(types.InlineKeyboardButton("Новогоднее поздравление 2022", url="https://youtu.be/nvfpReb0vUk"))
         bot.send_message(message.chat.id, "Ссылки:", reply_markup=markup)
 
     elif message.text == "📅 Расписание":
-        photo = open('rasp.png','rb')
+        photo = open('rasp.png', 'rb')
         bot.send_photo(message.chat.id, photo)
         bot.send_message(message.chat.id, "Расписание сейчас пустое. Лето же")
 
@@ -122,14 +125,17 @@ def menu_gl(message):
 
     elif message.text == "Литература":
         markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("Лекции по русской литературе", url="https://www.culture.ru/themes/255902/lekcii-po-russkoi-literature-dlya-shkolnikov"))
-        markup.add(types.InlineKeyboardButton("Аудиокниги для 7-го класса", url="https://www.culture.ru/themes/637/audioknigi-dlya-7-go-klassa"))
+        markup.add(types.InlineKeyboardButton("Лекции по русской литературе",
+                                              url="https://www.culture.ru/themes/255902/lekcii-po-russkoi-literature-dlya-shkolnikov"))
+        markup.add(types.InlineKeyboardButton("Аудиокниги для 7-го класса",
+                                              url="https://www.culture.ru/themes/637/audioknigi-dlya-7-go-klassa"))
         bot.send_message(message.chat.id, "Ссылки:", reply_markup=markup)
 
     elif message.text == "История":
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("История России в фотографиях", url="https://russiainphoto.ru/"))
-        markup.add(types.InlineKeyboardButton("Арзамас на YouTube", url="https://www.youtube.com/channel/UCVgvnGSFU41kIhEc09aztEg"))
+        markup.add(types.InlineKeyboardButton("Арзамас на YouTube",
+                                              url="https://www.youtube.com/channel/UCVgvnGSFU41kIhEc09aztEg"))
         bot.send_message(message.chat.id, "Ссылки:", reply_markup=markup)
 
     elif message.text == "Математика":
@@ -140,7 +146,8 @@ def menu_gl(message):
     elif message.text == "Иностранные языки":
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Базовая грамматика", url="https://www.duolingo.com/"))
-        markup.add(types.InlineKeyboardButton("Советы по изучению английского языка", url="https://www.youtube.com/playlist?list=PLFKp3jApY_lcdamjFjn5fyKN3e3W9sP8E"))
+        markup.add(types.InlineKeyboardButton("Советы по изучению английского языка",
+                                              url="https://www.youtube.com/playlist?list=PLFKp3jApY_lcdamjFjn5fyKN3e3W9sP8E"))
         bot.send_message(message.chat.id, "Ссылки:", reply_markup=markup)
 
     elif message.text == "География":
@@ -151,7 +158,8 @@ def menu_gl(message):
     elif message.text == "Общее":
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("РЭШ по всем предметам 7 класса", url="https://resh.edu.ru/class/7/"))
-        markup.add(types.InlineKeyboardButton("Интерактивные рабочие тетради по всем предметам", url="https://edu.skysmart.ru"))
+        markup.add(types.InlineKeyboardButton("Интерактивные рабочие тетради по всем предметам",
+                                              url="https://edu.skysmart.ru"))
         bot.send_message(message.chat.id, "Ссылки:", reply_markup=markup)
 
     elif message.text == "🔙 Главное меню":
@@ -168,9 +176,12 @@ def menu_gl(message):
         info = types.KeyboardButton(text="ℹ️ Информация")
         weather = types.KeyboardButton(text="☔️ Погода в школе")
         start.add(menu, info, weather)
-        bot.send_message(message.chat.id, "Заведующий ботом: Кирилл Александрович \nЕсли есть пожелания и предложения, \nнапиши сюда: larink@mail.ru", reply_markup=start)
+        bot.send_message(message.chat.id,
+                         "Заведующий ботом: Кирилл Александрович \nЕсли есть пожелания и предложения, \nнапиши сюда: larink@mail.ru",
+                         reply_markup=start)
 
     else:
         bot.send_message(message.chat.id, text="Извини, на такую комманду я ещё не запрограммирован...")
+
 
 bot.polling(none_stop=True)
