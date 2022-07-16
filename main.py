@@ -1,12 +1,31 @@
+from flask import Flask, request
 import telebot
 from pyowm import OWM
 from pyowm.utils.config import get_default_config
 from telebot import types
+import subprocess
 
 import config
 
-# token
-bot = telebot.TeleBot(config.telegram_token)
+app = Flask(__name__)
+
+bot = telebot.TeleBot(config.telegram_token, threaded=False)
+
+
+@app.route("/" + config.telegram_token, methods=['POST'])
+def get_message():
+    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+    return ''
+
+
+@app.route("/update_server")
+def update_server():
+    try:
+        subprocess.run(["git", "pull"])
+        return 'Updated PythonAnywhere successfully', 200
+    except:
+        return 'Failed to update PythonAnywhere', 500
+
 
 # блок погоды
 config_dict = get_default_config()
@@ -184,4 +203,5 @@ def menu_gl(message):
         bot.send_message(message.chat.id, text="Извини, на такую комманду я ещё не запрограммирован...")
 
 
-bot.polling(none_stop=True)
+bot.remove_webhook()
+bot.set_webhook(f'https://larinkirill.pythonanywhere.com/{config.telegram_token}')
