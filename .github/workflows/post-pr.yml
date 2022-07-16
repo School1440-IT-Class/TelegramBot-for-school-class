@@ -1,6 +1,7 @@
 name: Deploy after PR closed
 
 on:
+  workflow_dispatch:
   pull_request:
     types: [closed]
     branches: [ main ]
