@@ -1,0 +1,22 @@
+name: Deploy after PR closed
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [ main ]
+    paths:
+      - 'app/**'
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy to PythonAnywhere
+      uses: satak/webrequest-action@master
+      with:
+        url: http://larinkirill.pythonanywhere.com/update_server/${{ secrets.DEPLOY_TOKEN }}
+        method: POST
