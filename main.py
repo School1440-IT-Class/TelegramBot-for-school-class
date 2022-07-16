@@ -18,7 +18,7 @@ def get_message():
     return ''
 
 
-@app.route("/update_server")
+@app.route("/update_server", methods=['POST'])
 def update_server():
     try:
         subprocess.run(["git", "pull"])
