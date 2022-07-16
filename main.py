@@ -1,3 +1,5 @@
+import os.path
+
 from flask import Flask, request
 import telebot
 from pyowm import OWM
@@ -113,7 +115,7 @@ def menu_gl(message):
         bot.send_message(message.chat.id, "Ссылки:", reply_markup=markup)
 
     elif message.text == "📅 Расписание":
-        photo = open('rasp.png', 'rb')
+        photo = open(os.path.join(config.THIS_FOLDER, 'rasp.png'), 'rb')
         bot.send_photo(message.chat.id, photo)
         bot.send_message(message.chat.id, "Расписание сейчас пустое. Лето же")
 
