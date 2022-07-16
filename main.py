@@ -20,7 +20,7 @@ def get_message():
 
 @app.route('/live', methods=['GET'])
 def liveness_check():
-    return "Works", 200
+    return "Works Test", 200
 
 
 @app.route(f'/update_server/{config.deploy_token}', methods=['POST'])
