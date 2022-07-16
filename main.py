@@ -11,6 +11,7 @@ app = Flask(__name__)
 
 bot = telebot.TeleBot(config.telegram_token, threaded=False)
 
+# Test
 
 @app.route("/" + config.telegram_token, methods=['POST'])
 def get_message():
