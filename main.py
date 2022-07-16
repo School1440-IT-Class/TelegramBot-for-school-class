@@ -18,6 +18,11 @@ def get_message():
     return ''
 
 
+@app.route('/live', methods=['GET'])
+def liveness_check():
+    return "Works", 200
+
+
 @app.route(f'/update_server/{config.deploy_token}', methods=['POST'])
 def update_server():
     try:
