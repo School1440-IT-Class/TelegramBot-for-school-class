@@ -11,15 +11,14 @@ app = Flask(__name__)
 
 bot = telebot.TeleBot(config.telegram_token, threaded=False)
 
-# Test
 
-@app.route("/" + config.telegram_token, methods=['POST'])
+@app.route(f'/{config.telegram_token}', methods=['POST'])
 def get_message():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return ''
 
 
-@app.route("/update_server", methods=['POST'])
+@app.route(f'/update_server/{config.deploy_token}', methods=['POST'])
 def update_server():
     try:
         subprocess.run(["git", "pull"])
