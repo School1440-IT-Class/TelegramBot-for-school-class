@@ -28,7 +28,7 @@ def liveness_check():
 @app.route(f'/update_server/{config.deploy_token}', methods=['POST'])
 def update_server():
     try:
-        subprocess.run(["git", "pull"])
+        subprocess.run(["git", "pull"], cwd=config.THIS_FOLDER)
         return 'Updated PythonAnywhere successfully', 200
     except:
         return 'Failed to update PythonAnywhere', 500
