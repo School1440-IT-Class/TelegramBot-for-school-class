@@ -5,3 +5,4 @@ load_dotenv()
 
 telegram_token = os.getenv("TELEGRAM_TOKEN")
 owm_token = os.getenv("OWM_TOKEN")
+deploy_token = os.getenv("DEPLOY_TOKEN")
