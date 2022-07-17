@@ -215,7 +215,7 @@ def menu_gl(message):
         weather = types.KeyboardButton(text="☔️ Погода в школе")
         start.add(menu, info, weather)
         bot.send_message(message.chat.id,
-                         "Заведующий ботом: Кирилл Александрович \nЕсли есть пожелания и предложения, \nнапиши сюда: larink@mail.ru",
+                         "Заведующий ботом: Кирилл Александрович \nЕсли есть пожелания и предложения, \nнапиши сюда: larink@mail.ru\nТехнический УМ: Кудин Михаил",
                          reply_markup=start)
 
     else:
