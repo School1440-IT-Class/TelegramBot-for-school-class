@@ -6,7 +6,7 @@ from pyowm import OWM
 from pyowm.utils.config import get_default_config
 from telebot import types
 import subprocess
-#test
+
 import config
 
 app = Flask(__name__)
@@ -65,7 +65,8 @@ def start(message):
     menu = types.KeyboardButton(text="📚 Меню")
     info = types.KeyboardButton(text="ℹ️ Информация")
     weather = types.KeyboardButton(text="☔️ Погода в школе")
-    start.add(menu, info, weather)
+    news = types.KeyboardButton(text="📰 Новости класса")
+    start.add(menu, info, weather, news)
     bot.send_message(message.chat.id, "Добро пожаловать!", reply_markup=start)
 
 
@@ -76,7 +77,7 @@ def menu_gl(message):
         website = types.KeyboardButton(text="🌐 Сайт школы")
         raspisanie = types.KeyboardButton(text="📅 Расписание")
         foto = types.KeyboardButton(text="📸 Фотографии")
-        chat = types.KeyboardButton(text="Болталка")
+        chat = types.KeyboardButton(text="🙊 Болталка")
         sciense = types.KeyboardButton(text="👨‍🎓 Предметы")
         video = types.KeyboardButton(text="📹 Видео")
         home = types.KeyboardButton(text="🔙 Главное меню")
@@ -86,6 +87,16 @@ def menu_gl(message):
     elif message.text == "🌐 Сайт школы":
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Сайт школы", url="https://sch1440.mskobr.ru"))
+        bot.send_message(message.chat.id, "Ссылка:", reply_markup=markup)
+
+    elif message.text == "📰 Новости класса":
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("Новости класса", url="https://t.me/+8EC_TbICh20zMzhi"))
+        bot.send_message(message.chat.id, "Ссылка:", reply_markup=markup)
+
+    elif message.text == "🙊 Болталка":
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("Чат класса", url="https://t.me/+OZRgNUtsYGk0ZTli"))
         bot.send_message(message.chat.id, "Ссылка:", reply_markup=markup)
 
     elif message.text == "☔️ Погода в школе":
@@ -193,7 +204,8 @@ def menu_gl(message):
         menu = types.KeyboardButton(text="📚 Меню")
         info = types.KeyboardButton(text="ℹ️ Информация")
         weather = types.KeyboardButton(text="☔️ Погода в школе")
-        start.add(menu, info, weather)
+        news = types.KeyboardButton(text="📰 Новости класса")
+        start.add(menu, info, weather,news)
         bot.send_message(message.chat.id, text="Вы вернулись в главное меню", reply_markup=start)
 
     elif message.text == "ℹ️ Информация":
