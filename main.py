@@ -6,7 +6,7 @@ from pyowm import OWM
 from pyowm.utils.config import get_default_config
 from telebot import types
 import subprocess
-
+#test
 import config
 
 app = Flask(__name__)
