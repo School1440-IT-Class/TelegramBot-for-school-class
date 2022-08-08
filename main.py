@@ -178,6 +178,7 @@ def menu_gl(message):
     elif message.text == "Математика":
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Учебник. 6 класс", url="https://disk.yandex.ru/i/5Go0mTLb_vg_2g"))
+        markup.add(types.InlineKeyboardButton("Учебник. 7 класс. Алгебра", url="https://disk.yandex.ru/i/Ub8_P9W-QdKbJw"))
         bot.send_message(message.chat.id, "Ссылки:", reply_markup=markup)
 
     elif message.text == "Иностранные языки":
