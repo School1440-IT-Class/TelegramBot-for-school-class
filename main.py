@@ -128,7 +128,7 @@ def menu_gl(message):
     elif message.text == "📅 Расписание":
         photo = open(os.path.join(config.THIS_FOLDER, 'rasp.png'), 'rb')
         bot.send_photo(message.chat.id, photo)
-        bot.send_message(message.chat.id, "Расписание сейчас пустое. Лето же")
+        bot.send_message(message.chat.id, "Расписание уроков.")
 
     elif message.text == "📸 Фотографии":
         markup = types.InlineKeyboardMarkup()
