@@ -82,7 +82,7 @@ def menu_gl(message):
         sciense = types.KeyboardButton(text="👨‍🎓 Предметы")
         video = types.KeyboardButton(text="📹 Видео")
         home = types.KeyboardButton(text="🔙 Главное меню")
-        menu.add(website, raspisanie, foto, chat, sciense, video, home)
+        menu.add(website, raspisanie, dejurstvo,foto, chat, sciense, video, home)
         bot.send_message(message.chat.id, "Выберите раздел", reply_markup=menu)
 
     elif message.text == "🌐 Сайт школы":
