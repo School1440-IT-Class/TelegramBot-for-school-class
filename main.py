@@ -130,6 +130,11 @@ def menu_gl(message):
         bot.send_photo(message.chat.id, photo)
         bot.send_message(message.chat.id, "Расписание уроков.")
 
+    elif message.text == "🕒 Дежурство":
+        photo = open(os.path.join(config.THIS_FOLDER, 'dej.png'), 'rb')
+        bot.send_photo(message.chat.id, photo)
+        bot.send_message(message.chat.id, "Дежурство в классе.")
+
     elif message.text == "📸 Фотографии":
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("Архивные фотографии", url="https://disk.yandex.ru/a/JROCoYo_scWZiQ"))
