@@ -132,8 +132,9 @@ def menu_gl(message):
 
     elif message.text == "📸 Фотографии":
         markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("Архивные фотографии", url="https://disk.yandex.ru/a/JROCoYo_scWZiQ"))
+        markup.add(types.InlineKeyboardButton("Архивные фотографии", url="https://disk.yandex.ru/d/JApawVsQPhpsdw"))
         markup.add(types.InlineKeyboardButton("9 сентября 2022", url="https://disk.yandex.ru/d/dtksi3NQ_4SrbA"))
+        markup.add(types.InlineKeyboardButton("Фабрика глазированных сырков", url="https://disk.yandex.ru/d/tdb64mAgyge3sQ"))
         bot.send_message(message.chat.id, "Ссылки:", reply_markup=markup)
 
     elif message.text == "👨‍🎓 Предметы":
