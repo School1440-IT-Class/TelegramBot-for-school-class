@@ -76,6 +76,7 @@ def menu_gl(message):
         menu = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
         website = types.KeyboardButton(text="🌐 Сайт школы")
         raspisanie = types.KeyboardButton(text="📅 Расписание")
+        dejurstvo = types.KeyboardButton(text="🕒 Дежурство")
         foto = types.KeyboardButton(text="📸 Фотографии")
         chat = types.KeyboardButton(text="🙊 Болталка")
         sciense = types.KeyboardButton(text="👨‍🎓 Предметы")
